@@ -6,7 +6,7 @@ import "./product_list.dart";
 class ProductManager extends StatefulWidget {
   final String startingProduct;
 
-  ProductManager({this.startingProduct}) {
+  ProductManager({this.startingProduct = 'Some Product'}) {
     print('[ProductManager] constructor');
   }
 

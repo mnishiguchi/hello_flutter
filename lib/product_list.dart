@@ -6,7 +6,7 @@ class ProductList extends StatelessWidget {
   final List<String> products;
 
   // constructor that accepts params that are bound to properties
-  ProductList(this.products) {
+  ProductList([this.products = const []]) {
     print('[ProductList] constructor');
   }
 
