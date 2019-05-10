@@ -10,6 +10,25 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Hello Flutter"),
         ),
+        body: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(10.0),
+              child: RaisedButton(
+                onPressed: () {},
+                child: Text("Add Product"),
+              ),
+            ),
+            Card(
+              child: Column(
+                children: <Widget>[
+                  Image.asset('assets/masa_chinatown.png'),
+                  Text("Food Paradise"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
