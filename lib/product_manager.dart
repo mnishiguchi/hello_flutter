@@ -6,10 +6,13 @@ import "./product_list.dart";
 class ProductManager extends StatefulWidget {
   final String startingProduct;
 
-  ProductManager({this.startingProduct});
+  ProductManager({this.startingProduct}) {
+    print('[ProductManager] constructor');
+  }
 
   @override
   State<StatefulWidget> createState() {
+    print('[ProductManager] createState');
     return _ProductManagerState();
   }
 }
@@ -23,12 +26,24 @@ class _ProductManagerState extends State<ProductManager> {
   void initState() {
     super.initState();
 
+    print('[ProductManagerState] initState');
+
     // widget is a reference to StatefulWidget.
     _products.add(widget.startingProduct);
   }
 
+  // Called when external props trigger the re-rendering.
+  @override
+  void didUpdateWidget(ProductManager oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    print('[ProductManagerState] didUpdateWidget');
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('[ProductManagerState] build');
+
     return Column(
       children: <Widget>[
         Container(

@@ -6,9 +6,13 @@ class ProductList extends StatelessWidget {
   final List<String> products;
 
   // constructor that accepts params that are bound to properties
-  ProductList(this.products);
+  ProductList(this.products) {
+    print('[ProductList] constructor');
+  }
 
   Widget build(BuildContext context) {
+    print('[ProductList] build');
+
     return Column(
       children: products
           .map(
