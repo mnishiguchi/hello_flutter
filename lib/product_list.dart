@@ -26,13 +26,11 @@ class ProductList extends StatelessWidget {
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
-                child: Text(product['title']),
+                child: Text('Details'),
                 onPressed: () {
-                  Future<Map<String, dynamic>> result = Navigator.push(
+                  Future<Map<String, dynamic>> result = Navigator.pushNamed(
                     context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProductPage(product: product)),
+                    '/product/$index',
                   );
                   result.then((result) {
                     // Do nothing for null result.

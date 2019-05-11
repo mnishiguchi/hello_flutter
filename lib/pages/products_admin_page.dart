@@ -17,8 +17,10 @@ class ProductsAdminPage extends StatelessWidget {
                   title: Text('Choose'),
                 ),
                 ListTile(
-                  title: Text('Manage Products'),
-                  onTap: () {},
+                  title: Text('All Products'),
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/');
+                  },
                 ),
               ],
             ),

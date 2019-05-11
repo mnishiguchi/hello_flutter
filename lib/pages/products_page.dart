@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../product_manager.dart';
+import 'package:hello_flutter/product_list.dart';
 
 class ProductsPage extends StatelessWidget {
+  final List<Map<String, dynamic>> products;
+  final Function addProduct;
+  final Function removeProductByIndex;
+
+  ProductsPage({this.products, this.addProduct, this.removeProductByIndex});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +21,9 @@ class ProductsPage extends StatelessWidget {
             ),
             ListTile(
               title: Text('Manage Products'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/admin');
+              },
             ),
           ],
         ),
@@ -24,7 +32,29 @@ class ProductsPage extends StatelessWidget {
         title: Text('Hello Flutter'),
       ),
       body: Center(
-        child: ProductManager(),
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(10.0),
+              child: RaisedButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () {
+                  addProduct({
+                    'title': 'Software Engineer',
+                    'image': 'assets/masa_chinatown.png',
+                  });
+                },
+                child: Text("Add Product"),
+              ),
+            ),
+            Expanded(
+              child: ProductList(
+                products: products,
+                removeProductByIndex: removeProductByIndex,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
