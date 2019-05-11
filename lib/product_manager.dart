@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import "./product_list.dart";
+import "./product_control.dart";
 
 // A CRUD list of products.
 class ProductManager extends StatefulWidget {
@@ -40,6 +41,12 @@ class _ProductManagerState extends State<ProductManager> {
     print('[ProductManagerState] didUpdateWidget');
   }
 
+  void _addProduct(String product) {
+    setState(() {
+      _products.add(product);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print('[ProductManagerState] build');
@@ -48,15 +55,7 @@ class _ProductManagerState extends State<ProductManager> {
       children: <Widget>[
         Container(
           margin: EdgeInsets.all(10.0),
-          child: RaisedButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              setState(() {
-                _products.add('Guitarist');
-              });
-            },
-            child: Text("Add Product"),
-          ),
+          child: ProductControl(addProduct: _addProduct),
         ),
         ProductList(_products),
       ],
