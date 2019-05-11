@@ -13,7 +13,7 @@ class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductList] build');
 
-    return Column(
+    return ListView(
       children: products
           .map(
             (text) => Card(
