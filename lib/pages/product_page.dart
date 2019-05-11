@@ -5,6 +5,36 @@ class ProductPage extends StatelessWidget {
 
   ProductPage({this.product});
 
+  _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('This action cannot be undone.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                // Close the dialog.
+                Navigator.pop(context);
+              },
+            ),
+            FlatButton(
+              child: Text('Continue'),
+              onPressed: () {
+                // Close the dialog.
+                Navigator.pop(context);
+                // Pass a result back to the Future that was returned by Navigator.push.
+                Navigator.pop(context, {'deleted': true});
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +55,7 @@ class ProductPage extends StatelessWidget {
               child: RaisedButton(
                 color: Theme.of(context).accentColor,
                 child: Text('Delete'),
-                onPressed: () {
-                  // Pass a result back to the Future that was returned by Navigator.push.
-                  Navigator.pop(context, {'deleted': true});
-                },
+                onPressed: () => _showConfirmationDialog(context),
               ),
             ),
           ],
