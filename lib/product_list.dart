@@ -6,9 +6,10 @@ import './pages/product_page.dart';
 class ProductList extends StatelessWidget {
   // immutable properties
   final List<Map<String, dynamic>> products;
+  final Function removeProductByIndex;
 
   // constructor that accepts params that are bound to properties
-  ProductList([this.products = const []]) {
+  ProductList({this.products = const [], this.removeProductByIndex}) {
     print('[ProductList] constructor');
   }
 
@@ -26,13 +27,22 @@ class ProductList extends StatelessWidget {
             children: <Widget>[
               FlatButton(
                 child: Text(product['title']),
-                onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
+                onPressed: () {
+                  Future<Map<String, dynamic>> result = Navigator.push(
+                    context,
+                    MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            ProductPage(product: product),
-                      ),
-                    ),
+                            ProductPage(product: product)),
+                  );
+                  result.then((result) {
+                    // Do nothing for null result.
+                    if (result == null) return;
+
+                    if (result['deleted']) {
+                      removeProductByIndex(index);
+                    }
+                  });
+                },
               )
             ],
           )
