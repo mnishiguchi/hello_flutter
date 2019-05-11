@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './products_page.dart';
+import './products_admin_page.dart';
 
 class AuthPage extends StatelessWidget {
   @override
@@ -16,7 +16,7 @@ class AuthPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => ProductsPage(),
+                builder: (BuildContext context) => ProductsAdminPage(),
               ),
             );
           },
