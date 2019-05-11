@@ -4,7 +4,19 @@ class ProductsAdminNewPane extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('New Product'),
+      child: RaisedButton(
+        child: Text('Save'),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Text('Modal content'),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
