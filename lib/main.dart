@@ -25,9 +25,7 @@ class MyApp extends StatelessWidget {
           title: Text("Hello Flutter"),
         ),
         body: Center(
-          child: ProductManager(
-            startingProduct: "Software Engineer",
-          ),
+          child: ProductManager(),
         ),
       ),
     );

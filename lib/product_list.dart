@@ -10,22 +10,31 @@ class ProductList extends StatelessWidget {
     print('[ProductList] constructor');
   }
 
+  Widget _buildProductItem(BuildContext context, int index) {
+    print('[ProductList] _buildProductItem');
+
+    String text = products[index];
+    return Card(
+      child: Column(
+        children: <Widget>[
+          Image.asset('assets/masa_chinatown.png'),
+          Text(text),
+        ],
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     print('[ProductList] build');
 
-    return ListView(
-      children: products
-          .map(
-            (text) => Card(
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset('assets/masa_chinatown.png'),
-                      Text(text),
-                    ],
-                  ),
-                ),
-          )
-          .toList(),
-    );
+    if (products.length > 0) {
+      return ListView.builder(
+        itemBuilder: _buildProductItem,
+        itemCount: products.length,
+      );
+    } else {
+      // The build method must return a widget even it if nothing is displayed.
+      return Center(child: Text("No product found"));
+    }
   }
 }

@@ -5,9 +5,7 @@ import "./product_control.dart";
 
 // A CRUD list of products.
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
-
-  ProductManager({this.startingProduct = 'Some Product'}) {
+  ProductManager() {
     print('[ProductManager] constructor');
   }
 
@@ -28,9 +26,6 @@ class _ProductManagerState extends State<ProductManager> {
     super.initState();
 
     print('[ProductManagerState] initState');
-
-    // widget is a reference to StatefulWidget.
-    _products.add(widget.startingProduct);
   }
 
   // Called when external props trigger the re-rendering.
