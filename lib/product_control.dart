@@ -12,7 +12,10 @@ class ProductControl extends StatelessWidget {
     return RaisedButton(
       color: Theme.of(context).primaryColor,
       onPressed: () {
-        addProduct("new product");
+        addProduct({
+          'title': 'Software Engineer',
+          'image': 'assets/masa_chinatown.png',
+        });
       },
       child: Text("Add Product"),
     );

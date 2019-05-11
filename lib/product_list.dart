@@ -5,7 +5,7 @@ import './pages/product_page.dart';
 // Map
 class ProductList extends StatelessWidget {
   // immutable properties
-  final List<String> products;
+  final List<Map<String, dynamic>> products;
 
   // constructor that accepts params that are bound to properties
   ProductList([this.products = const []]) {
@@ -15,26 +15,22 @@ class ProductList extends StatelessWidget {
   Widget _buildProductItem(BuildContext context, int index) {
     print('[ProductList] _buildProductItem');
 
-    String title = products[index];
-    String imageUrl = 'assets/masa_chinatown.png';
-
+    Map<String, dynamic> product = products[index];
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset(imageUrl),
-          Text(title),
+          Image.asset(product['image']),
+          Text(product['title']),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
               FlatButton(
-                child: Text(title),
+                child: Text(product['title']),
                 onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (BuildContext context) => ProductPage(
-                              title: title,
-                              imageUrl: imageUrl,
-                            ),
+                        builder: (BuildContext context) =>
+                            ProductPage(product: product),
                       ),
                     ),
               )

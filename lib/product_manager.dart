@@ -19,7 +19,7 @@ class ProductManager extends StatefulWidget {
 // A state that belongs to ProductManager Widget.
 class _ProductManagerState extends State<ProductManager> {
   // properties
-  List<String> _products = [];
+  List<Map<String, dynamic>> _products = [];
 
   @override
   void initState() {
@@ -36,7 +36,7 @@ class _ProductManagerState extends State<ProductManager> {
     print('[ProductManagerState] didUpdateWidget');
   }
 
-  void _addProduct(String product) {
+  void _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
     });
