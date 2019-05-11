@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 
-import "./product_manager.dart";
+import "./pages/home_page.dart";
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -20,14 +20,7 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.green,
         brightness: Brightness.light,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("Hello Flutter"),
-        ),
-        body: Center(
-          child: ProductManager(),
-        ),
-      ),
+      home: HomePage(),
     );
   }
 }
