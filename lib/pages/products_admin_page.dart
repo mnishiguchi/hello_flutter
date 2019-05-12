@@ -1,62 +1,74 @@
 import 'package:flutter/material.dart';
 
-import './product_create_from.dart';
-import './products_admin_index_pane.dart';
+import './products_admin/products_admin_form.dart';
+import './products_admin/products_admin_index.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   final Function addProduct;
-  final Function removeProductByIndex;
+  final Function updateProduct;
+  final Function deleteProduct;
+  final List<Map<String, dynamic>> products;
 
-  ProductsAdminPage({this.addProduct, this.removeProductByIndex});
+  ProductsAdminPage({
+    this.addProduct,
+    this.updateProduct,
+    this.deleteProduct,
+    this.products,
+  });
+
+  Widget _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: <Widget>[
+          AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Choose'),
+          ),
+          ListTile(
+            title: Text('All Products'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/');
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          drawer: Drawer(
-            child: Column(
-              children: <Widget>[
-                AppBar(
-                  automaticallyImplyLeading: false,
-                  title: Text('Choose'),
-                ),
-                ListTile(
-                  title: Text('All Products'),
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, '/');
-                  },
-                ),
-              ],
-            ),
-          ),
-          appBar: AppBar(
-            title: Text('Hello Flutter'),
-            bottom: TabBar(
-              tabs: <Widget>[
-                Tab(
-                  icon: Icon(Icons.create),
-                  text: 'Create Product',
-                ),
-                Tab(
-                  icon: Icon(Icons.list),
-                  text: 'My Products',
-                ),
-              ],
-            ),
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              ProductCreateForm(
-                addProduct: addProduct,
-                removeProductByIndex: removeProductByIndex,
+        drawer: _buildDrawer(context),
+        appBar: AppBar(
+          title: Text('Hello Flutter'),
+          bottom: TabBar(
+            tabs: <Widget>[
+              Tab(
+                icon: Icon(Icons.create),
+                text: 'Create Product',
               ),
-              ProductsAdminIndexPane(),
+              Tab(
+                icon: Icon(Icons.list),
+                text: 'My Products',
+              ),
             ],
-          )
-
-          //   child: ProductManager(),
           ),
+        ),
+        body: TabBarView(
+          children: <Widget>[
+            ProductsAdminForm(
+              addProduct: addProduct,
+            ),
+            ProductsAdminIndex(
+              products: products,
+              updateProduct: updateProduct,
+              deleteProduct: deleteProduct,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

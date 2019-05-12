@@ -5,36 +5,6 @@ class ProductPage extends StatelessWidget {
 
   ProductPage({this.product});
 
-  _showConfirmationDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('This action cannot be undone.'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                // Close the dialog.
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('Continue'),
-              onPressed: () {
-                // Close the dialog.
-                Navigator.pop(context);
-                // Pass a result back to the Future that was returned by Navigator.push.
-                Navigator.pop(context, {'deleted': true});
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,22 +18,52 @@ class ProductPage extends StatelessWidget {
             Image.asset(product['image']),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text(product['title']),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    product['title'],
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Oswald',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.0,
+                      vertical: 2.5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
+                    child: Text(
+                      '\$${product['price']}',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text(product['description']),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Text(product['price']),
-            ),
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: RaisedButton(
-                color: Theme.of(context).accentColor,
-                child: Text('Delete'),
-                onPressed: () => _showConfirmationDialog(context),
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                  ),
+                  borderRadius: BorderRadius.circular(6.0)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                  vertical: 2.5,
+                ),
+                child: Text(product['description']),
               ),
             ),
           ],

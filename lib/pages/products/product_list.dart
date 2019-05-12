@@ -25,18 +25,7 @@ class ProductList extends StatelessWidget {
               FlatButton(
                 child: Text('Details'),
                 onPressed: () {
-                  Future<Map<String, dynamic>> result = Navigator.pushNamed(
-                    context,
-                    '/product/$index',
-                  );
-                  result.then((result) {
-                    // Do nothing for null result.
-                    if (result == null) return;
-
-                    if (result['deleted']) {
-                      // TODO: delete item
-                    }
-                  });
+                  Navigator.pushNamed(context, '/product/$index');
                 },
               )
             ],

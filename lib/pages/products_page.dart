@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:hello_flutter/product_list.dart';
+import './products/product_list.dart';
 
+// A list of products
 class ProductsPage extends StatelessWidget {
   final List<Map<String, dynamic>> products;
 
@@ -33,9 +34,7 @@ class ProductsPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ProductList(
-                products: products,
-              ),
+              child: ProductList(products: products),
             )
           ],
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 
-import "./pages/auth_page.dart";
+// import "./pages/auth_page.dart";
 import './pages/product_page.dart';
 import './pages/products_page.dart';
 import './pages/products_admin_page.dart';
@@ -45,7 +45,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void _removeProductByIndex(int index) {
+  void _updateProduct(int index, Map<String, dynamic> product) {
+    setState(() {
+      _products[index] = product;
+    });
+  }
+
+  void _deleteProduct(int index) {
     setState(() {
       _products.removeAt(index);
     });
@@ -60,15 +66,15 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.green,
         brightness: Brightness.light,
       ),
-      // home: AuthPage(),
       // static routes
       routes: {
-        '/': (BuildContext context) => ProductsPage(
-              products: _products,
-            ),
-        '/admin': (BuildContext context) => ProductsAdminPage(
+        '/': (_) => ProductsPage(products: _products),
+        '/products': (_) => ProductsPage(products: _products),
+        '/admin': (_) => ProductsAdminPage(
               addProduct: _addProduct,
-              removeProductByIndex: _removeProductByIndex,
+              updateProduct: _updateProduct,
+              deleteProduct: _deleteProduct,
+              products: _products,
             ),
       },
       // dynamic routes
@@ -82,8 +88,8 @@ class _MyAppState extends State<MyApp> {
         if (pathElements[1] == 'product') {
           final int index = int.parse(pathElements[2]);
           return MaterialPageRoute<Map<String, dynamic>>(
-              builder: (BuildContext context) =>
-                  ProductPage(product: _products[index]));
+            builder: (_) => ProductPage(product: _products[index]),
+          );
         }
 
         return null;
@@ -91,7 +97,7 @@ class _MyAppState extends State<MyApp> {
       // fallback route
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(
-          builder: (BuildContext context) => ProductsPage(products: _products),
+          builder: (_) => ProductsPage(products: _products),
         );
       },
     );
