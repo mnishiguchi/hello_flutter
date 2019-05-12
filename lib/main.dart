@@ -65,10 +65,11 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (BuildContext context) => ProductsPage(
               products: _products,
+            ),
+        '/admin': (BuildContext context) => ProductsAdminPage(
               addProduct: _addProduct,
               removeProductByIndex: _removeProductByIndex,
             ),
-        '/admin': (BuildContext context) => ProductsAdminPage(),
       },
       // dynamic routes
       onGenerateRoute: (RouteSettings settings) {
@@ -90,11 +91,7 @@ class _MyAppState extends State<MyApp> {
       // fallback route
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(
-          builder: (BuildContext context) => ProductsPage(
-                products: _products,
-                addProduct: _addProduct,
-                removeProductByIndex: _removeProductByIndex,
-              ),
+          builder: (BuildContext context) => ProductsPage(products: _products),
         );
       },
     );

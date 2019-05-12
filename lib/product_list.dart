@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-import './pages/product_page.dart';
-
 // Map
 class ProductList extends StatelessWidget {
   // immutable properties
   final List<Map<String, dynamic>> products;
-  final Function removeProductByIndex;
 
   // constructor that accepts params that are bound to properties
-  ProductList({this.products = const [], this.removeProductByIndex}) {
+  ProductList({this.products = const []}) {
     print('[ProductList] constructor');
   }
 
@@ -37,7 +34,7 @@ class ProductList extends StatelessWidget {
                     if (result == null) return;
 
                     if (result['deleted']) {
-                      removeProductByIndex(index);
+                      // TODO: delete item
                     }
                   });
                 },

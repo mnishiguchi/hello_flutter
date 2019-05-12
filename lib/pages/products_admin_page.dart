@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
-import './products_admin_new_pane.dart';
+import './product_create_from.dart';
 import './products_admin_index_pane.dart';
 
 class ProductsAdminPage extends StatelessWidget {
+  final Function addProduct;
+  final Function removeProductByIndex;
+
+  ProductsAdminPage({this.addProduct, this.removeProductByIndex});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -42,7 +47,10 @@ class ProductsAdminPage extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              ProductsAdminNewPane(),
+              ProductCreateForm(
+                addProduct: addProduct,
+                removeProductByIndex: removeProductByIndex,
+              ),
               ProductsAdminIndexPane(),
             ],
           )
