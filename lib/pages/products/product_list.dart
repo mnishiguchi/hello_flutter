@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../models/product.dart';
+
 // Map
 class ProductList extends StatelessWidget {
   // immutable properties
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
 
   // constructor that accepts params that are bound to properties
   ProductList({this.products = const []}) {
@@ -13,12 +15,12 @@ class ProductList extends StatelessWidget {
   Widget _buildProductItem(BuildContext context, int index) {
     print('[ProductList] _buildProductItem');
 
-    Map<String, dynamic> product = products[index];
+    Product product = products[index];
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset(product['image']),
-          Text(product['title']),
+          Image.asset(product.image),
+          Text(product.title),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[

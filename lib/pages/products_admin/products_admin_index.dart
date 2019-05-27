@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hello_flutter/pages/products_admin/products_admin_form.dart';
+
+import '../../models/product.dart';
+import './products_admin_form.dart';
 
 class ProductsAdminIndex extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  final List<Product> products;
   final Function updateProduct;
   final Function deleteProduct;
 
@@ -77,9 +79,9 @@ class ProductsAdminIndex extends StatelessWidget {
 
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) {
-        Map<String, dynamic> product = products[index];
+        Product product = products[index];
         return Dismissible(
-          key: Key(product['title']),
+          key: Key(product.title),
           background: Container(color: Colors.red),
           onDismissed: (DismissDirection direction) {
             if (direction == DismissDirection.endToStart) {
@@ -95,10 +97,10 @@ class ProductsAdminIndex extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage(product['image']),
+                  backgroundImage: AssetImage(product.image),
                 ),
-                title: Text(product['title']),
-                subtitle: Text('\$${product['price']}'),
+                title: Text(product.title),
+                subtitle: Text('\$${product.price}'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
