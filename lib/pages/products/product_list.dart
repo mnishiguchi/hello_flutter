@@ -1,53 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
+import '../../stores/product_store.dart';
+import '../../pages/product_page.dart';
 
-// Map
 class ProductList extends StatelessWidget {
-  // immutable properties
-  final List<Product> products;
-
-  // constructor that accepts params that are bound to properties
-  ProductList({this.products = const []}) {
-    print('[ProductList] constructor');
-  }
-
-  Widget _buildProductItem(BuildContext context, int index) {
-    print('[ProductList] _buildProductItem');
-
-    Product product = products[index];
-    return Card(
-      child: Column(
-        children: <Widget>[
-          Image.asset(product.image),
-          Text(product.title),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FlatButton(
-                child: Text('Details'),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/product/$index');
-                },
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
   Widget build(BuildContext context) {
     print('[ProductList] build');
 
-    if (products.length > 0) {
-      return ListView.builder(
-        itemBuilder: _buildProductItem,
-        itemCount: products.length,
-      );
-    } else {
-      // The build method must return a widget even it if nothing is displayed.
-      return Center(child: Text("No product found"));
-    }
+    return ScopedModelDescendant<ProductStore>(
+      builder: (BuildContext context, Widget child, ProductStore store) {
+        final List<Product> products = store.products;
+
+        // The build method must return a widget even it if nothing is displayed.
+        if (products.length <= 0)
+          return Center(child: Text("No product found"));
+
+        return ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (BuildContext context, int index) {
+            Product product = products[index];
+            return Card(
+              child: Column(
+                children: <Widget>[
+                  Image.asset(product.image),
+                  Text(product.title),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text('Details'),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            ProductPage.routeName,
+                            arguments: ProductPageArgs(productIndex: index),
+                          );
+                        },
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 }

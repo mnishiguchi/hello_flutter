@@ -1,73 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
+import '../../stores/product_store.dart';
 import './products_admin_form.dart';
 
 class ProductsAdminIndex extends StatelessWidget {
-  final List<Product> products;
-  final Function updateProduct;
-  final Function deleteProduct;
+  ProductsAdminIndex();
 
-  ProductsAdminIndex({
-    this.products,
-    this.updateProduct,
-    this.deleteProduct,
-  });
-
-  _showConfirmationDialog(BuildContext context, Function callback) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Are you sure?'),
-          content: Text('This action cannot be undone.'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                // Close the dialog.
-                Navigator.pop(context);
-              },
-            ),
-            FlatButton(
-              child: Text('Continue'),
-              onPressed: () {
-                // Close the dialog.
-                Navigator.pop(context);
-                callback();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _editButton(BuildContext context, int index) {
+  Widget _buildEditButton({
+    @required BuildContext context,
+    @required ProductStore store,
+    @required int selectedProductIndex,
+  }) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
+        store.selectProduct(selectedProductIndex);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return ProductsAdminForm(
-                product: products[index],
-                updateProduct: updateProduct,
-                productIndex: index,
-              );
+              return ProductsAdminForm();
             },
           ),
-        );
-      },
-    );
-  }
-
-  Widget _deleteButton(BuildContext context, int index) {
-    return IconButton(
-      icon: Icon(Icons.delete),
-      onPressed: () {
-        _showConfirmationDialog(context, () {
-          deleteProduct(index);
+        ).then((_) {
+          store.selectProduct(null);
         });
       },
     );
@@ -75,46 +32,50 @@ class ProductsAdminIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[ProductsAdminIndex] build - $products');
+    print('[ProductsAdminIndex] build');
 
-    return ListView.builder(
-      itemBuilder: (BuildContext context, int index) {
-        Product product = products[index];
-        return Dismissible(
-          key: Key(product.title),
-          background: Container(color: Colors.red),
-          onDismissed: (DismissDirection direction) {
-            if (direction == DismissDirection.endToStart) {
-              print('Swiped endToStart');
-              deleteProduct(index);
-            } else if (direction == DismissDirection.startToEnd) {
-              print('Swiped startToEnd');
-            } else {
-              print('Other swiping');
-            }
-          },
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage(product.image),
-                ),
-                title: Text(product.title),
-                subtitle: Text('\$${product.price}'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    _deleteButton(context, index),
-                    _editButton(context, index),
-                  ],
-                ),
+    return ScopedModelDescendant<ProductStore>(
+      builder: (BuildContext context, Widget _, ProductStore store) {
+        final List<Product> products = store.products;
+
+        return ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Dismissible(
+              key: Key(products[index].title),
+              background: Container(color: Colors.red),
+              onDismissed: (DismissDirection direction) {
+                if (direction == DismissDirection.endToStart) {
+                  print('Swiped endToStart');
+                  store.selectProduct(index);
+                  store.deleteProduct();
+                } else if (direction == DismissDirection.startToEnd) {
+                  print('Swiped startToEnd');
+                } else {
+                  print('Other swiping');
+                }
+              },
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: AssetImage(products[index].image),
+                    ),
+                    title: Text(products[index].title),
+                    subtitle: Text('\$${products[index].price}'),
+                    trailing: _buildEditButton(
+                      context: context,
+                      store: store,
+                      selectedProductIndex: index,
+                    ),
+                  ),
+                  Divider(),
+                ],
               ),
-              Divider(),
-            ],
-          ),
+            );
+          },
+          itemCount: products.length,
         );
       },
-      itemCount: products.length,
     );
   }
 }

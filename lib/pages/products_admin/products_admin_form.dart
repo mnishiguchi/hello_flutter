@@ -1,38 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
+import '../../stores/product_store.dart';
 
-class ProductsAdminForm extends StatefulWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Product product;
-  final int productIndex;
+// https://github.com/flutter/flutter/issues/1632#issuecomment-180478202
+final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  ProductsAdminForm({
-    this.addProduct,
-    this.updateProduct,
-    this.product,
-    this.productIndex,
-  });
-
-  @override
-  _ProductsAdminFormState createState() => _ProductsAdminFormState();
-}
-
-class _ProductsAdminFormState extends State<ProductsAdminForm> {
+class ProductsAdminForm extends StatelessWidget {
   final Map<String, dynamic> _formData = {
     'title': '',
     'description': '',
     'price': '',
     'image': 'assets/mn_logo.png',
   };
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Widget _buildTitleTextFormField() {
+  Widget _buildTitleTextFormField(Product product) {
     return TextFormField(
       keyboardType: TextInputType.text,
       decoration: InputDecoration(labelText: 'Product Title'),
-      initialValue: widget.product == null ? '' : widget.product.title,
+      initialValue: product == null ? '' : product.title,
       validator: (String value) {
         if (value.isEmpty || value.length < 5) {
           return 'required and at least 5 characters long';
@@ -44,12 +31,12 @@ class _ProductsAdminFormState extends State<ProductsAdminForm> {
     );
   }
 
-  Widget _buildDescriptionTextFormField() {
+  Widget _buildDescriptionTextFormField(Product product) {
     return TextFormField(
       keyboardType: TextInputType.multiline,
       maxLines: 4,
       decoration: InputDecoration(labelText: 'Product Description'),
-      initialValue: widget.product == null ? '' : widget.product.description,
+      initialValue: product == null ? '' : product.description,
       validator: (String value) {
         if (value.isEmpty || value.length < 5) {
           return 'required and at least 5 characters long';
@@ -61,11 +48,11 @@ class _ProductsAdminFormState extends State<ProductsAdminForm> {
     );
   }
 
-  Widget _buildPriceTextFormField() {
+  Widget _buildPriceTextFormField(Product product) {
     return TextFormField(
       keyboardType: TextInputType.number,
       decoration: InputDecoration(labelText: 'Product Price'),
-      initialValue: widget.product == null ? '' : widget.product.price,
+      initialValue: product == null ? '' : product.price,
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -78,22 +65,30 @@ class _ProductsAdminFormState extends State<ProductsAdminForm> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm({
+    BuildContext context,
+    Product product,
+    Function addProduct,
+    Function updateProduct,
+  }) {
     if (!_formKey.currentState.validate()) return;
 
     _formKey.currentState.save();
 
-    Product productFromFormData = Product(
-      title: _formData['title'],
-      description: _formData['description'],
-      price: _formData['price'],
-      image: _formData['image'],
-    );
-
-    if (widget.product == null) {
-      widget.addProduct(productFromFormData);
+    if (product == null) {
+      addProduct(
+        title: _formData['title'],
+        description: _formData['description'],
+        price: _formData['price'],
+        image: _formData['image'],
+      );
     } else {
-      widget.updateProduct(widget.productIndex, productFromFormData);
+      updateProduct(
+        title: _formData['title'],
+        description: _formData['description'],
+        price: _formData['price'],
+        image: _formData['image'],
+      );
     }
 
     Navigator.pushReplacementNamed(context, '/products');
@@ -105,32 +100,40 @@ class _ProductsAdminFormState extends State<ProductsAdminForm> {
     return deviceWidth - targetWidth;
   }
 
-  Widget _buildPageContent(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // This allows a user to close a soft keyboard by tapping somewhere.
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Container(
-        margin: EdgeInsets.all(10.0),
-        padding:
-            EdgeInsets.symmetric(horizontal: computeTargetPadding(context)),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              _buildTitleTextFormField(),
-              _buildDescriptionTextFormField(),
-              _buildPriceTextFormField(),
-              SizedBox(height: 10.0),
-              RaisedButton(
-                child: Text('Save'),
-                color: Theme.of(context).accentColor,
-                textColor: Colors.white,
-                onPressed: _submitForm,
-              ),
-            ],
-          ),
+  Widget _buildPageContent({
+    BuildContext context,
+    Product product,
+    Function addProduct,
+    Function updateProduct,
+  }) {
+    print('[ProductsAdminForm] _buildPageContent');
+
+    return Container(
+      margin: EdgeInsets.all(10.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          padding:
+              EdgeInsets.symmetric(horizontal: computeTargetPadding(context)),
+          children: <Widget>[
+            _buildTitleTextFormField(product),
+            _buildDescriptionTextFormField(product),
+            _buildPriceTextFormField(product),
+            SizedBox(height: 10.0),
+            RaisedButton(
+              child: Text('Save'),
+              color: Theme.of(context).accentColor,
+              textColor: Colors.white,
+              onPressed: () {
+                _submitForm(
+                  context: context,
+                  addProduct: addProduct,
+                  updateProduct: updateProduct,
+                  product: product,
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -138,16 +141,25 @@ class _ProductsAdminFormState extends State<ProductsAdminForm> {
 
   @override
   Widget build(BuildContext context) {
-    Widget pageContent = _buildPageContent(context);
+    return ScopedModelDescendant(
+      builder: (BuildContext context, Widget _, ProductStore store) {
+        final Widget pageContent = _buildPageContent(
+          context: context,
+          product: store.selectedProduct,
+          addProduct: store.addProduct,
+          updateProduct: store.updateProduct,
+        );
 
-    // Use scaffold when this widget is a standalone page.
-    return widget.product == null
-        ? pageContent
-        : Scaffold(
-            appBar: AppBar(
-              title: Text('Edit Product'),
-            ),
-            body: pageContent,
-          );
+        // Use scaffold when this widget is a standalone page.
+        return store.selectedProduct == null
+            ? pageContent
+            : Scaffold(
+                appBar: AppBar(
+                  title: Text('Edit Product'),
+                ),
+                body: pageContent,
+              );
+      },
+    );
   }
 }

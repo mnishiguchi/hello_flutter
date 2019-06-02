@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../pages/products_page.dart';
+
 class AuthPage extends StatefulWidget {
+  static const routeName = '/auth';
+
   @override
   _AuthPageState createState() => _AuthPageState();
 }
@@ -51,11 +55,16 @@ class _AuthPageState extends State<AuthPage> {
   void _submitForm() {
     print(_email);
     print(_password);
-    Navigator.pushReplacementNamed(context, '/products');
+    Navigator.pushReplacementNamed(
+      context,
+      ProductsPage.routeName,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    print('[ProductPage] build');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Log in'),

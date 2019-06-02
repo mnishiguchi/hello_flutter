@@ -5,17 +5,7 @@ import './products_admin/products_admin_form.dart';
 import './products_admin/products_admin_index.dart';
 
 class ProductsAdminPage extends StatelessWidget {
-  final Function addProduct;
-  final Function updateProduct;
-  final Function deleteProduct;
-  final List<Product> products;
-
-  ProductsAdminPage({
-    this.addProduct,
-    this.updateProduct,
-    this.deleteProduct,
-    this.products,
-  });
+  static const routeName = '/products_admin';
 
   Widget _buildDrawer(BuildContext context) {
     return Drawer(
@@ -38,6 +28,8 @@ class ProductsAdminPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('[ProductsAdminPage] build');
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -58,16 +50,7 @@ class ProductsAdminPage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            ProductsAdminForm(
-              addProduct: addProduct,
-            ),
-            ProductsAdminIndex(
-              products: products,
-              updateProduct: updateProduct,
-              deleteProduct: deleteProduct,
-            ),
-          ],
+          children: <Widget>[ProductsAdminForm(), ProductsAdminIndex()],
         ),
       ),
     );

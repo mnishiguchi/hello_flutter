@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hello_flutter/pages/products_admin_page.dart';
 
-import '../models/product.dart';
 import './products/product_list.dart';
 
 // A list of products
 class ProductsPage extends StatelessWidget {
-  final List<Product> products;
-
-  ProductsPage({this.products});
+  static const routeName = '/products';
 
   @override
   Widget build(BuildContext context) {
+    print('[ProductsPage] build');
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -22,7 +22,10 @@ class ProductsPage extends StatelessWidget {
             ListTile(
               title: Text('Manage Products'),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/admin');
+                Navigator.pushReplacementNamed(
+                  context,
+                  ProductsAdminPage.routeName,
+                );
               },
             ),
           ],
@@ -35,7 +38,7 @@ class ProductsPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: ProductList(products: products),
+              child: ProductList(),
             )
           ],
         ),
