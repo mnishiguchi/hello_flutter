@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
-import '../../stores/product_store.dart';
+import '../../stores/app_store.dart';
 import '../../pages/product_page.dart';
 
 class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductList] build');
 
-    return ScopedModelDescendant<ProductStore>(
-      builder: (BuildContext context, Widget child, ProductStore store) {
+    return ScopedModelDescendant<AppStore>(
+      builder: (BuildContext context, Widget child, AppStore store) {
         final List<Product> products = store.products;
 
         // The build method must return a widget even it if nothing is displayed.

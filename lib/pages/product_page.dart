@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../models/product.dart';
-import '../stores/product_store.dart';
+import '../stores/app_store.dart';
 
 class ProductPageArgs {
   final int productIndex;
@@ -21,8 +21,8 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductPage] build');
 
-    return ScopedModelDescendant<ProductStore>(
-      builder: (BuildContext context, Widget child, ProductStore store) {
+    return ScopedModelDescendant<AppStore>(
+      builder: (BuildContext context, Widget child, AppStore store) {
         Product product = store.products[productIndex];
 
         return Scaffold(

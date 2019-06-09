@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../models/product.dart';
 
-class ProductStore extends Model {
+mixin ProductStore on Model {
   List<Product> _products = [];
   int _selectedProductIndex;
 

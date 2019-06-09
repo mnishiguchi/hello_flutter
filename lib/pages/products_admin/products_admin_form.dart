@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
-import '../../stores/product_store.dart';
+import '../../stores/app_store.dart';
 
 // https://github.com/flutter/flutter/issues/1632#issuecomment-180478202
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -142,7 +142,7 @@ class ProductsAdminForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant(
-      builder: (BuildContext context, Widget _, ProductStore store) {
+      builder: (BuildContext context, Widget _, AppStore store) {
         final Widget pageContent = _buildPageContent(
           context: context,
           product: store.selectedProduct,

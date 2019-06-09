@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../models/product.dart';
-import '../../stores/product_store.dart';
+import '../../stores/app_store.dart';
 import './products_admin_form.dart';
 
 class ProductsAdminIndex extends StatelessWidget {
@@ -10,7 +10,7 @@ class ProductsAdminIndex extends StatelessWidget {
 
   Widget _buildEditButton({
     @required BuildContext context,
-    @required ProductStore store,
+    @required AppStore store,
     @required int selectedProductIndex,
   }) {
     return IconButton(
@@ -34,8 +34,8 @@ class ProductsAdminIndex extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductsAdminIndex] build');
 
-    return ScopedModelDescendant<ProductStore>(
-      builder: (BuildContext context, Widget _, ProductStore store) {
+    return ScopedModelDescendant<AppStore>(
+      builder: (BuildContext context, Widget _, AppStore store) {
         final List<Product> products = store.products;
 
         return ListView.builder(
