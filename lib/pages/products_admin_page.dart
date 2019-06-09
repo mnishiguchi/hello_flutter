@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/product.dart';
 import './products_admin/products_admin_form.dart';
-import './products_admin/products_admin_index.dart';
+import './products_admin/products_admin_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
   static const routeName = '/products_admin';
@@ -50,7 +49,7 @@ class ProductsAdminPage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[ProductsAdminForm(), ProductsAdminIndex()],
+          children: <Widget>[ProductsAdminForm(), ProductsAdminList()],
         ),
       ),
     );

@@ -5,8 +5,8 @@ import '../../models/product.dart';
 import '../../stores/app_store.dart';
 import './products_admin_form.dart';
 
-class ProductsAdminIndex extends StatelessWidget {
-  ProductsAdminIndex();
+class ProductsAdminList extends StatelessWidget {
+  ProductsAdminList();
 
   Widget _buildEditButton({
     @required BuildContext context,
@@ -32,7 +32,7 @@ class ProductsAdminIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[ProductsAdminIndex] build');
+    print('[ProductsAdminList] build');
 
     return ScopedModelDescendant<AppStore>(
       builder: (BuildContext context, Widget _, AppStore store) {

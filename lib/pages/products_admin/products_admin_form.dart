@@ -12,7 +12,7 @@ class ProductsAdminForm extends StatelessWidget {
     'title': '',
     'description': '',
     'price': '',
-    'image': 'assets/mn_logo.png',
+    'image': 'assets/food.jpg',
   };
 
   Widget _buildTitleTextFormField(Product product) {

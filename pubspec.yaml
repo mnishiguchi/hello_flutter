@@ -46,6 +46,8 @@ flutter:
   assets:
     - assets/mn_logo.png
     - assets/masa_chinatown.png
+    - assets/background.jpg
+    - assets/food.jpg
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_flutter/pages/products_admin_page.dart';
 
-import './products/product_list.dart';
+import '../widgets/product_list/product_list.dart';
 
 // A list of products
 class ProductsPage extends StatelessWidget {

@@ -8,7 +8,10 @@ mixin ProductStore on Model {
   int _selectedProductIndex;
 
   List<Product> get products {
-    // return a copy of the product list
+    return List.from(_products);
+  }
+
+  List<Product> get allProducts {
     return List.from(_products);
   }
 
@@ -48,6 +51,7 @@ mixin ProductStore on Model {
     String description,
     String image,
     String price,
+    bool isFavorite,
   }) {
     print('[ProductStore] updateProduct');
     assert(_selectedProductIndex != null);
@@ -56,12 +60,19 @@ mixin ProductStore on Model {
       description: description ?? selectedProduct.description,
       image: image ?? selectedProduct.image,
       price: price ?? selectedProduct.price,
+      isFavorite: isFavorite ?? selectedProduct.isFavorite,
     );
     notifyListeners();
   }
 
   void deleteProduct() {
     _products.removeAt(_selectedProductIndex);
+    selectProduct(null);
+    notifyListeners();
+  }
+
+  void toggleProductFavoriteStatus() {
+    updateProduct(isFavorite: !selectedProduct.isFavorite);
     selectProduct(null);
     notifyListeners();
   }
