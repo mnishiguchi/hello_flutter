@@ -11,7 +11,7 @@ class ProductList extends StatelessWidget {
 
     return Consumer<AppStore>(
       builder: (_, store, __) {
-        final List<Product> products = store.products;
+        final List<Product> products = store.displayedProducts;
 
         // The build method must return a widget even it if nothing is displayed.
         if (products.length <= 0)
