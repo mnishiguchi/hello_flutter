@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 import '../../stores/app_store.dart';
@@ -141,8 +141,8 @@ class ProductsAdminForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant(
-      builder: (BuildContext context, Widget _, AppStore store) {
+    return Consumer<AppStore>(
+      builder: (_, store, __) {
         final Widget pageContent = _buildPageContent(
           context: context,
           product: store.selectedProduct,

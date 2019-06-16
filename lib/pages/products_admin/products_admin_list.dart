@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 import '../../stores/app_store.dart';
@@ -34,8 +34,8 @@ class ProductsAdminList extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductsAdminList] build');
 
-    return ScopedModelDescendant<AppStore>(
-      builder: (BuildContext context, Widget _, AppStore store) {
+    return Consumer<AppStore>(
+      builder: (_, store, __) {
         final List<Product> products = store.products;
 
         return ListView.builder(

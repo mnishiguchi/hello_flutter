@@ -1,5 +1,5 @@
-import 'package:scoped_model/scoped_model.dart';
+import 'package:flutter/material.dart';
 
 import './product_store.dart';
 
-class AppStore extends Model with ProductStore {}
+class AppStore with ChangeNotifier, ProductStore {}

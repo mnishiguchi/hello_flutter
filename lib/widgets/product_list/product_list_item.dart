@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 import '../../stores/app_store.dart';
@@ -45,8 +45,8 @@ class ProductListItem extends StatelessWidget {
             );
           },
         ),
-        ScopedModelDescendant<AppStore>(
-          builder: (BuildContext context, Widget child, AppStore store) {
+        Consumer<AppStore>(
+          builder: (_, store, __) {
             return IconButton(
               icon: Icon(store.allProducts[productIndex].isFavorite
                   ? Icons.favorite

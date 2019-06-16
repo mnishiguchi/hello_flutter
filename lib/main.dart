@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
-import 'package:scoped_model/scoped_model.dart';
+import "package:provider/provider.dart";
 
 import './stores/app_store.dart';
 import './models/product.dart';
@@ -27,8 +27,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     // Provide a singleton instance for the entire tree.
-    return ScopedModel<AppStore>(
-      model: AppStore(),
+    return ChangeNotifierProvider<AppStore>(
+      builder: (_) => AppStore(),
       child: MaterialApp(
         // debugShowMaterialGrid: true,
         theme: ThemeData(
