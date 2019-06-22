@@ -6,6 +6,7 @@ import '../pages/products_page.dart';
 
 // https://github.com/flutter/flutter/issues/1632#issuecomment-180478202
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class AuthPage extends StatefulWidget {
   static const routeName = '/auth';
@@ -77,7 +78,12 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   void _submitForm({BuildContext context, Function loginUser}) {
-    if (!_formKey.currentState.validate() || !_formData['isTermsAccepted']) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    if (!_formData['isTermsAccepted']) {
+      _showSnackBar('Please accept terms');
       return;
     }
 
@@ -92,6 +98,10 @@ class _AuthPageState extends State<AuthPage> {
     return deviceWidth - targetWidth;
   }
 
+  _showSnackBar(String message) {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
   Widget build(BuildContext context) {
     print('[ProductPage] build');
@@ -99,6 +109,7 @@ class _AuthPageState extends State<AuthPage> {
     AppStore appStore = Provider.of<AppStore>(context);
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Log in'),
       ),
