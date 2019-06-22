@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/product.dart';
 import '../../stores/app_store.dart';
+import '../../pages/products_page.dart';
 
 // https://github.com/flutter/flutter/issues/1632#issuecomment-180478202
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -65,25 +66,22 @@ class ProductsAdminForm extends StatelessWidget {
     );
   }
 
-  void _submitForm({
-    BuildContext context,
-    Product product,
-    Function addProduct,
-    Function updateProduct,
-  }) {
-    if (!_formKey.currentState.validate()) return;
+  void _submitForm({BuildContext context, AppStore appStore}) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
 
     _formKey.currentState.save();
 
-    if (product == null) {
-      addProduct(
+    if (appStore.selectedProduct == null) {
+      appStore.addProduct(
         title: _formData['title'],
         description: _formData['description'],
         price: _formData['price'],
         image: _formData['image'],
       );
     } else {
-      updateProduct(
+      appStore.updateProduct(
         title: _formData['title'],
         description: _formData['description'],
         price: _formData['price'],
@@ -91,7 +89,11 @@ class ProductsAdminForm extends StatelessWidget {
       );
     }
 
-    Navigator.pushReplacementNamed(context, '/products');
+    // Unselect the product after navigating away because this page's rendering
+    // is determined by the presence of a selected product.
+    Navigator.pushReplacementNamed(context, ProductsPage.routeName).then((_) {
+      appStore.selectProduct(null);
+    });
   }
 
   double computeTargetPadding(BuildContext context) {
@@ -100,13 +102,10 @@ class ProductsAdminForm extends StatelessWidget {
     return deviceWidth - targetWidth;
   }
 
-  Widget _buildPageContent({
-    BuildContext context,
-    Product product,
-    Function addProduct,
-    Function updateProduct,
-  }) {
+  Widget _buildPageContent({BuildContext context, AppStore appStore}) {
     print('[ProductsAdminForm] _buildPageContent');
+
+    final Product product = appStore.selectedProduct;
 
     return Container(
       margin: EdgeInsets.all(10.0),
@@ -125,12 +124,7 @@ class ProductsAdminForm extends StatelessWidget {
               color: Theme.of(context).accentColor,
               textColor: Colors.white,
               onPressed: () {
-                _submitForm(
-                  context: context,
-                  addProduct: addProduct,
-                  updateProduct: updateProduct,
-                  product: product,
-                );
+                _submitForm(context: context, appStore: appStore);
               },
             ),
           ],
@@ -141,25 +135,16 @@ class ProductsAdminForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppStore>(
-      builder: (_, store, __) {
-        final Widget pageContent = _buildPageContent(
-          context: context,
-          product: store.selectedProduct,
-          addProduct: store.addProduct,
-          updateProduct: store.updateProduct,
-        );
+    AppStore appStore = Provider.of<AppStore>(context);
 
-        // Use scaffold when this widget is a standalone page.
-        return store.selectedProduct == null
-            ? pageContent
-            : Scaffold(
-                appBar: AppBar(
-                  title: Text('Edit Product'),
-                ),
-                body: pageContent,
-              );
-      },
-    );
+    // Use scaffold when this widget is a standalone page.
+    return appStore.selectedProduct == null
+        ? _buildPageContent(context: context, appStore: appStore)
+        : Scaffold(
+            appBar: AppBar(
+              title: Text('Edit Product'),
+            ),
+            body: _buildPageContent(context: context, appStore: appStore),
+          );
   }
 }

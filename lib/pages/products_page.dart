@@ -35,21 +35,23 @@ class ProductsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductsPage] build');
 
+    AppStore appStore = Provider.of<AppStore>(context);
+
     return Scaffold(
       drawer: _buildDrawer(context),
       appBar: AppBar(
-        title: Text('Hello Flutter'),
+        title: Text(appStore.isDisplayModeFavorite
+            ? 'My Favorite Products'
+            : 'All Products'),
         actions: <Widget>[
-          Consumer<AppStore>(builder: (_, store, __) {
-            return IconButton(
-              icon: Icon(store.isDisplayModeFavorite
-                  ? Icons.favorite
-                  : Icons.favorite_border),
-              onPressed: () {
-                store.toggleDisplayMode();
-              },
-            );
-          })
+          FlatButton(
+            child: Text(appStore.isDisplayModeFavorite
+                ? 'Show All'
+                : 'Show Only Favorite'),
+            onPressed: () {
+              appStore.toggleDisplayMode();
+            },
+          ),
         ],
       ),
       body: Center(

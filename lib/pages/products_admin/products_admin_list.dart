@@ -10,13 +10,13 @@ class ProductsAdminList extends StatelessWidget {
 
   Widget _buildEditButton({
     @required BuildContext context,
-    @required AppStore store,
+    @required AppStore appStore,
     @required int selectedProductIndex,
   }) {
     return IconButton(
       icon: Icon(Icons.edit),
       onPressed: () {
-        store.selectProduct(selectedProductIndex);
+        appStore.selectProduct(selectedProductIndex);
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
@@ -24,7 +24,7 @@ class ProductsAdminList extends StatelessWidget {
             },
           ),
         ).then((_) {
-          store.selectProduct(null);
+          appStore.selectProduct(null);
         });
       },
     );
@@ -34,48 +34,45 @@ class ProductsAdminList extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductsAdminList] build');
 
-    return Consumer<AppStore>(
-      builder: (_, store, __) {
-        final List<Product> products = store.products;
+    AppStore appStore = Provider.of<AppStore>(context);
+    final List<Product> products = appStore.products;
 
-        return ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return Dismissible(
-              key: Key(products[index].title),
-              background: Container(color: Colors.red),
-              onDismissed: (DismissDirection direction) {
-                if (direction == DismissDirection.endToStart) {
-                  print('Swiped endToStart');
-                  store.selectProduct(index);
-                  store.deleteProduct();
-                } else if (direction == DismissDirection.startToEnd) {
-                  print('Swiped startToEnd');
-                } else {
-                  print('Other swiping');
-                }
-              },
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: AssetImage(products[index].image),
-                    ),
-                    title: Text(products[index].title),
-                    subtitle: Text('\$${products[index].price}'),
-                    trailing: _buildEditButton(
-                      context: context,
-                      store: store,
-                      selectedProductIndex: index,
-                    ),
-                  ),
-                  Divider(),
-                ],
-              ),
-            );
+    return ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return Dismissible(
+          key: Key(products[index].title),
+          background: Container(color: Colors.red),
+          onDismissed: (DismissDirection direction) {
+            if (direction == DismissDirection.endToStart) {
+              print('Swiped endToStart');
+              appStore.selectProduct(index);
+              appStore.deleteProduct();
+            } else if (direction == DismissDirection.startToEnd) {
+              print('Swiped startToEnd');
+            } else {
+              print('Other swiping');
+            }
           },
-          itemCount: products.length,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage(products[index].image),
+                ),
+                title: Text(products[index].title),
+                subtitle: Text('\$${products[index].price}'),
+                trailing: _buildEditButton(
+                  context: context,
+                  appStore: appStore,
+                  selectedProductIndex: index,
+                ),
+              ),
+              Divider(),
+            ],
+          ),
         );
       },
+      itemCount: products.length,
     );
   }
 }

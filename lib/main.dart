@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
-import "package:provider/provider.dart";
+import 'package:provider/provider.dart';
 
 import './stores/app_store.dart';
 import './models/product.dart';
-// import "./pages/auth_page.dart";
+import './pages/auth_page.dart';
 import './pages/product_page.dart';
 import './pages/products_page.dart';
 import './pages/products_admin_page.dart';
@@ -33,12 +33,14 @@ class _MyAppState extends State<MyApp> {
         // debugShowMaterialGrid: true,
         theme: ThemeData(
           primarySwatch: Colors.orange,
-          accentColor: Colors.green,
           brightness: Brightness.light,
+          accentColor: Colors.green,
+          buttonColor: Colors.green,
         ),
         // static routes
         routes: {
-          '/': (_) => ProductsPage(),
+          '/': (_) => AuthPage(),
+          // '/': (_) => ProductsPage(),
           ProductsAdminPage.routeName: (_) => ProductsAdminPage(),
           ProductsPage.routeName: (_) => ProductsPage(),
         },

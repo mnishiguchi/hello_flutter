@@ -22,17 +22,14 @@ class ProductPage extends StatelessWidget {
   Widget build(BuildContext context) {
     print('[ProductPage] build');
 
-    return Consumer<AppStore>(
-      builder: (_, store, __) {
-        Product product = store.products[productIndex];
+    AppStore appStore = Provider.of<AppStore>(context);
+    Product currentProduct = appStore.products[productIndex];
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(product.title),
-          ),
-          body: ProductDetail(product),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(currentProduct.title),
+      ),
+      body: ProductDetail(currentProduct),
     );
   }
 }

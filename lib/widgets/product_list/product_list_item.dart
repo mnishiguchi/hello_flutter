@@ -71,6 +71,7 @@ class ProductListItem extends StatelessWidget {
           Image.asset(product.image),
           _buildTitlePriceRow(),
           AddressTag('1600 Pennsylvania Ave NW, Washington, DC'),
+          Text(product.userEmail ?? 'user not logged in'),
           _buildActionButtons(context)
         ],
       ),
